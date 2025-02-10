@@ -4,6 +4,12 @@
 
 ## Specs
 
+### A kubebuilder project
+
+- `go.mod`: A new Go module matching our project, with basic dependencies
+- `Makefile`: Make targets for building and deploying your controller
+- `PROJECT`: Kubebuilder metadata for scaffolding new components
+
 ### Designing CronJob API
 
 Fundamentally a CronJob needs the following pieces
