@@ -2,6 +2,36 @@
 
 [cronjob tutorial](https://book.kubebuilder.io/cronjob-tutorial/cronjob-tutorial)
 
+## Specs
+
+### Designing CronJob API
+
+Fundamentally a CronJob needs the following pieces
+
+- A schedule (the cron in CronJob)
+- A template for the Job to run (the job in CronJob)
+
+Optionally, we can add a few extras, which will make our users' lives easier:
+
+- A deadline for starting jobs (if we miss this deadline, we’ll just wait till the next scheduled time)
+- What to do if multiple jobs would run at once (do we wait? stop the old one? run both?)
+- A way to pause the running of a CronJob, in case something’s wrong with it
+- Limits on old job history
+
+### CronJob Controller
+
+The basic logic of our CronJob controller is this:
+
+1. Load the named CronJob
+2. List all active jobs, and update the status
+3. Clean up old jobs according to the history limits
+4. Check if we’re suspended (and don’t do anything else if we are)
+5. Get the next scheduled run
+6. Run a new job if it’s on schedule, not past the deadline, and not blocked by our concurrency policy
+7. Requeue when we either see a running job (done automatically) or it’s time for the next scheduled run.
+
+project/internal/cont
+
 ## Random notes
 
 - Designing an AOI: `omitempty` struct tag to mark that a field should be omitted from serialization when empty
