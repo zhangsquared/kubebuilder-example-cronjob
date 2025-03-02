@@ -24,6 +24,11 @@ Optionally, we can add a few extras, which will make our users' lives easier:
 - A way to pause the running of a CronJob, in case something’s wrong with it
 - Limits on old job history
 
+To create
+
+```bash
+kubebuilder create api --group batch --version v1 --kind CronJob
+```
 ### CronJob Controller
 
 The basic logic of our CronJob controller is this:
@@ -35,6 +40,24 @@ The basic logic of our CronJob controller is this:
 5. Get the next scheduled run
 6. Run a new job if it’s on schedule, not past the deadline, and not blocked by our concurrency policy
 7. Requeue when we either see a running job (done automatically) or it’s time for the next scheduled run.
+
+### Admission Webhooks
+
+Add `CustomDefaulter` and (or) the `CustomValidator` interface.
+
+Kubebuilder takes care of the rest for you, such as
+
+- Creating the webhook server.
+- Ensuring the server has been added in the manager.
+- Creating handlers for your webhooks.
+- Registering each handler with a path in your server.
+
+```bash
+kubebuilder create webhook --group batch --version v1 --kind CronJob --defaulting --programmatic-validation
+```
+
+- `--defaulting` flag makes defaulting flag
+- `--programmatic-validation` flag makes validating webhooks
 
 ## Random notes
 
