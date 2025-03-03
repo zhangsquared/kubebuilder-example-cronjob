@@ -91,6 +91,12 @@ make run
 k apply -f config/samples/batch_v1_cronjob.yaml
 ```
 
+4. Delete the cluster
+
+```bash
+kind delete cluster
+```
+
 ## Random notes
 
 - Designing an AOI: `omitempty` struct tag to mark that a field should be omitted from serialization when empty
