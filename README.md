@@ -59,6 +59,38 @@ kubebuilder create webhook --group batch --version v1 --kind CronJob --defaultin
 - `--defaulting` flag makes defaulting flag
 - `--programmatic-validation` flag makes validating webhooks
 
+## Test, Build and Deploy
+
+1. Run locally
+
+Setting up [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/#interacting-with-your-cluster) cluster
+
+```bash
+kind create cluster
+```
+
+Check cluster context
+
+```bash
+k ctx
+```
+
+2. Install CRDs on the cluster and run
+
+```bash
+make manifests
+make install
+
+export ENABLE_WEBHOOKS=false
+make run
+```
+
+3. Test
+
+```bash
+k apply -f config/samples/batch_v1_cronjob.yaml
+```
+
 ## Random notes
 
 - Designing an AOI: `omitempty` struct tag to mark that a field should be omitted from serialization when empty
